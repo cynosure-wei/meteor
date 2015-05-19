@@ -97,6 +97,10 @@ LocalCollection.Cursor = function (collection, selector, options) {
     // stash for fast path
     self._selectorId = selector;
     self.matcher = new Minimongo.Matcher(selector);
+  } else if (LocalCollection._selectorIsIdPerhapsAsObject(selector)) {
+    // also do the fast path for { _id: idString }
+    self._selectorId = selector._id;
+    self.matcher = new Minimongo.Matcher(selector);
   } else {
     self._selectorId = undefined;
     self.matcher = new Minimongo.Matcher(selector);
